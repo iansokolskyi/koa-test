@@ -1,0 +1,27 @@
+{
+  "name": "demo-koa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint './src/**/*.js'",
+    "lint:fix": "eslint './src/**/*.js' -- fix",
+    "lint:init": "eslint --init",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon ./app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^7.0.1",
+    "nunjucks": "^3.2.3"
+  }
+}
