@@ -8,7 +8,8 @@
     "lint:fix": "eslint './src/**/*.js' -- fix",
     "lint:init": "eslint --init",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon ./app.js"
+    "serve": "nodemon ./app.js",
+    "start": "node ./app.js"
   },
   "author": "",
   "license": "ISC",
