@@ -6,6 +6,7 @@ const router = new Router();
 
 router.get('user/:userId', controllers.profile);
 router.post('user', controllers.createUser);
+router.get('users', controllers.userList);
 
 module.exports = {
   router,

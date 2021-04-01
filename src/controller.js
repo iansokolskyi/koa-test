@@ -5,14 +5,15 @@ async function profile(ctx) {
   const { userId } = ctx.request.params;
   const userResponse = await db.query(`SELECT * FROM "user" WHERE id = ${userId}`);
   const userInRedis = await ctx.redis.get(userId);
-  console.log(JSON.parse(userInRedis));
+
   if (!userResponse.rowCount) {
     ctx.throw(400, 'User doesn`t exist');
   }
 
-  const name = userResponse.rows[0].fname;
-
-  await ctx.render('index', { name });
+  const user = userResponse.rows[0];
+  ctx.body = {
+    user,
+  };
 }
 
 async function createUser(ctx) {
@@ -33,8 +34,18 @@ async function createUser(ctx) {
     lname: user.lname,
   };
 }
+async function userList(ctx) {
+  const userListResponse = await db.query('SELECT * FROM "user"');
+
+  const users = userListResponse.rows;
+
+  ctx.body = {
+    users,
+  };
+}
 
 module.exports = {
   profile,
   createUser,
+  userList,
 };
