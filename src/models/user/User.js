@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 const db = require('../../db/db');
 
-class User {
+class UserDB {
   static async getUserByEmail(email) {
     const userResponse = await db.query(`SELECT * FROM "user" WHERE email = ${email}`);
 
@@ -30,4 +30,4 @@ class User {
   }
 }
 
-module.exports = { User };
+module.exports = { UserDB };
