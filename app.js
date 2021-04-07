@@ -21,11 +21,15 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
+    console.error(err);
     if (err.isJoi) {
       ctx.throw(400, err.details[0].message);
     }
-    console.log(err);
-    ctx.throw(400, err.message);
+    if (err.isPassport) {
+      ctx.throw(401, err.message);
+    }
+
+    ctx.throw(err.status || 500, err.message);
   }
 });
 

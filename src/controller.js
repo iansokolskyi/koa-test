@@ -1,20 +1,44 @@
 const crypto = require('crypto');
 const passport = require('koa-passport');
+const jwt = require('jwt-simple');
 
 const db = require('./db/db');
 const validator = require('./validator');
+const { UserDB } = require('./models/user/User');
 
 async function profile(ctx) {
-  const { userId } = ctx.request.params;
-  const userResponse = await db.query(`SELECT * FROM "user" WHERE id = ${userId}`);
+  ctx.body = {
+    user: ctx.state.user,
+  };
+}
 
-  if (!userResponse.rowCount) {
-    ctx.throw(400, 'User doesn`t exist');
+async function refresh(ctx) {
+  const token = ctx.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.decode(token, 'super_secret_refresh');
+
+  if (decodedToken.expiresIn <= new Date().getTime()) {
+    const error = new Error('Refresh token expired, please sign in into your account.');
+    error.status = 400;
+
+    throw error;
   }
 
-  const user = userResponse.rows[0];
+  const user = await UserDB.getUserByEmail(decodedToken.email);
+
+  const accessToken = {
+    id: user.id,
+    expiresIn: new Date().setTime(new Date().getTime() + 200000),
+  };
+  const refreshToken = {
+    email: user.email,
+    expiresIn: new Date().setTime(new Date().getTime() + 1000000),
+  };
+
   ctx.body = {
-    user,
+    accessToken: jwt.encode(accessToken, 'super_secret'),
+    accessTokenExpirationDate: accessToken.expiresIn,
+    refreshToken: jwt.encode(refreshToken, 'super_secret_refresh'),
+    refreshTokenExpirationDate: refreshToken.expiresIn,
   };
 }
 
@@ -69,6 +93,7 @@ async function userList(ctx) {
 
 module.exports = {
   profile,
+  refresh,
   createUser,
   userList,
   signIn,
