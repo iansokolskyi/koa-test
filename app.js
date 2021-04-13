@@ -6,32 +6,18 @@ const views = require('koa-views');
 const serve = require('koa-static');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
+
 const passport = require('./src/libs/passport/koaPassport');
+const errorCatcher = require('./src/middlewares/errorCatcher');
 
 passport.initialize();
-
-const globalRouter = require('./src/router');
 
 const app = new Koa();
 
 app.use(cors());
 
 app.use(bodyParser());
-app.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (err) {
-    console.error(err);
-    if (err.isJoi) {
-      ctx.throw(400, err.details[0].message);
-    }
-    if (err.isPassport) {
-      ctx.throw(401, err.message);
-    }
-
-    ctx.throw(err.status || 500, err.message);
-  }
-});
+app.use(errorCatcher);
 
 const router = new Router();
 
@@ -47,9 +33,9 @@ const render = views(path.join(__dirname, '/src/templates'), {
 app.use(render);
 app.use(serve(path.join(__dirname, '/src/public')));
 
-router.use('/', globalRouter.router.routes());
+router.use('/users', require('./src/users/users.router'));
 
-app.use(router.routes());
+app.use(router.middleware());
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

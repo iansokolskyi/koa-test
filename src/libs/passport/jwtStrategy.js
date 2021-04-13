@@ -1,7 +1,7 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 
-const { UserDB } = require('../../models/user/User');
+const { UserDB } = require('../../users/models/UserDB');
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
@@ -14,6 +14,6 @@ module.exports = new JwtStrategy(opts, (jwtPayload, done) => {
   }
 
   UserDB.getUserById(jwtPayload.id)
-    .then((user) => done(null, user))
+    .then((user) => done(null, user.getInfo()))
     .catch((err) => done({ isPassport: true, message: err.message }, false));
 });
