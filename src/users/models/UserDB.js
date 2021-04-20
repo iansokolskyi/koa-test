@@ -64,6 +64,13 @@ class UserDB {
 
     return users;
   }
+
+  static async updateUserPhoto(photoUrl, email) {
+    await db.query(`
+      UPDATE "user" SET photo = '${photoUrl}'
+      WHERE email = '${email}'
+    `);
+  }
 }
 
 module.exports = { UserDB };

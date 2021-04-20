@@ -1,12 +1,14 @@
 class User {
   constructor(dbRes) {
     this._id = dbRes.id;
+    this._password = dbRes.password;
+
     this.fname = dbRes.fname;
     this.lname = dbRes.lname;
     this.isActive = dbRes.isactive;
     this.categoryId = dbRes.categoryid;
     this.email = dbRes.email;
-    this._password = dbRes.password;
+    this.photo = dbRes.photo;
   }
 
   getInfo(idFlag = false) {
@@ -16,6 +18,7 @@ class User {
       email: this.email,
       isActive: this.isActive,
       categoryId: this.categoryId,
+      photo: this.photo,
     };
 
     if (idFlag) {

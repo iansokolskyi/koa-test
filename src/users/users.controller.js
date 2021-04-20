@@ -2,13 +2,9 @@ const passport = require('koa-passport');
 const jwt = require('jwt-simple');
 
 const { UserDB } = require('./models/UserDB');
+const AWSS3 = require('../utils/uploadS3');
 
 class UsersController {
-  static async example(ctx) {
-    const { body } = ctx.request;
-    ctx.body = { body };
-  }
-
   static async signIn(ctx, next) {
     await passport.authenticate('local', (err, user) => {
       if (user) {
@@ -73,6 +69,13 @@ class UsersController {
     ctx.body = {
       users,
     };
+  }
+
+  static async updatePhoto(ctx) {
+    const photoUrl = await AWSS3.uploadS3(ctx.request.body.photo, 'users', `photos_${ctx.state.user.email}`);
+
+    await UserDB.updateUserPhoto(photoUrl, ctx.state.user.email);
+    ctx.body = { photoUrl };
   }
 }
 

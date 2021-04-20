@@ -11,6 +11,6 @@ router.get('/refresh/token', UsersController.refresh);
 router.post('/', UserValidator.signUp, UsersController.createUser);
 router.post('/sign-in', UserValidator.signIn, UsersController.signIn);
 router.get('/', passport.authenticate('jwt', { session: false }), UsersController.userList);
-// router.post('/example', UserValidator.example, UsersController.example);
+router.put('/photo', passport.authenticate('jwt', { session: false }), UsersController.updatePhoto);
 
 module.exports = router;

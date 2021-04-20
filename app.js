@@ -6,6 +6,8 @@ const views = require('koa-views');
 const serve = require('koa-static');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
+const { koaSwagger } = require('koa2-swagger-ui');
+const config = require('config');
 
 const passport = require('./src/libs/passport/koaPassport');
 const errorCatcher = require('./src/middlewares/errorCatcher');
@@ -13,6 +15,15 @@ const errorCatcher = require('./src/middlewares/errorCatcher');
 passport.initialize();
 
 const app = new Koa();
+
+app.use(serve('src/docs'));
+app.use(koaSwagger({
+  routePrefix: '/docs',
+  hideTopbar: true,
+  swaggerOptions: {
+    url: `${config.get('server.baseUrl')}/docs.yml`,
+  },
+}));
 
 app.use(cors());
 
