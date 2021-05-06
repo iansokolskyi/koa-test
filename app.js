@@ -48,6 +48,10 @@ router.use('/users', require('./src/users/users.router'));
 
 app.use(router.middleware());
 
+app.use((ctx) => {
+  ctx.body = 'it works';
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
