@@ -2,14 +2,6 @@ const { Pool } = require('pg');
 
 class Database {
   constructor() {
-    // this.config = {
-    //   user: 'empty-user',
-    //   host: 'localhost',
-    //   database: 'nothing',
-    //   password: 'testpass',
-    //   port: 5432,
-    // };
-
     this.config = {
       user: process.env.DB_USER,
       host: process.env.DB_HOST,

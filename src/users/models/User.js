@@ -8,7 +8,7 @@ class User {
     this.isActive = dbRes.isactive;
     this.categoryId = dbRes.categoryid;
     this.email = dbRes.email;
-    this.photo = dbRes.photo;
+    // this.photo = dbRes.photo;
   }
 
   getInfo(idFlag = false) {
@@ -18,7 +18,7 @@ class User {
       email: this.email,
       isActive: this.isActive,
       categoryId: this.categoryId,
-      photo: this.photo,
+      // photo: this.photo,
     };
 
     if (idFlag) {
