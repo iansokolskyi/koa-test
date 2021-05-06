@@ -32,7 +32,7 @@ app.use(errorCatcher);
 
 const router = new Router();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const render = views(path.join(__dirname, '/src/templates'), {
   extension: 'njk',
